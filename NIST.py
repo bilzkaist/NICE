@@ -48,17 +48,57 @@ def get_image_paths(imagename):
     return fullpath
 
 
+def markingImage():
+
 def run_beta():
     print("Beta Program is Started........... !!!")
     # Write code Here
+    dn = 1
     imageReadPath = get_image_paths("images/Bilal.png")
     image = Image.open(imageReadPath)
     image.show()
+    imageGray = image.convert('L')
+    #imageGray.show()
+    imageGraySavePath = get_image_paths("images/BilalGray.png")
+    imageGray.save(imageGraySavePath)
+    imageGrayResize = imageGray.resize((int(imageGray.width / dn), int(imageGray.height / dn)))
+    #imageGrayResize.show()
+    imageGrayResizeSavePath = get_image_paths("images/BilalGrayResize.png")
+    imageGrayResize.save(imageGrayResizeSavePath)
+    image_array_resize = np.array(imageGrayResize)
     image_array = np.array(image)
-    print("Image Length : ", len(image_array))
+    imageAlpha = image.convert("RGBA") # sets alpha to 255
+    image_array_Mark = np.array(imageAlpha)
+    #image_array_Mark = np.zeros((int(imageGray.height / dn), int(imageGray.width / dn),3)) #numpy.zeros((800, 800))
+    print("Image Marked   : ", image_array_Mark.shape)
+    print("Image Basic    : ", image_array.shape)
+    print("Image Sized    : ", image_array_resize.shape)
+    print("Image Length   : ", len(image_array))
     print("Image Shape[0] : ", image_array.shape[0])
     print("Image Shape[1] : ", image_array.shape[1])
     print("Image Shape[2] : ", image_array.shape[2])
+
+    
+    for i in range(image_array.shape[0]):
+         for j in range(image_array.shape[1]):
+            image_array_Mark[i][j][image_array.shape[2]] = image_array_resize[i][j]
+            #for k in range(image_array.shape[2]):
+             #   image_array_Mark[i][j][k] = image_array[i][j][k]
+            #print("image_array[",i,"][",j,"][",[image_array.shape[2]-1],"]",image_array[i][j][image_array.shape[2]-1]) 
+    # for i in range(image_array_resize.shape[0]):
+    #      for j in range(image_array_resize.shape[1]):
+    #         image_array_Mark[i][j][4] = image_array_resize[i][j]       
+    #         for k in range(image_array.shape[2]):
+    #             print("image_array[",i,"][",j,"][",k,"]",image_array[i][j][k]) 
+    imageMarked=Image.fromarray(image_array_Mark)
+    imageMarkSavePath = get_image_paths("images/BilalMarked.png")
+    imageMarked.save(imageMarkSavePath)
+    #imageMarked.show()
+    imageMarkedReadPath = get_image_paths("images/BilalMarked.png")
+    imageMarkedLoaded = Image.open(imageMarkedReadPath)
+    imageMarkedLoaded.show()
+    imageMarkedLoadedArray = np.array(imageMarkedLoaded)
+    print("Image Marked Loaded   : ", imageMarkedLoadedArray.shape)
     imageSavePath = get_image_paths("images/Bilal.png")
     image.save(imageSavePath)
     print("Beta Program is Ended Successfully !!!")
