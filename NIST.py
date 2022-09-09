@@ -6,7 +6,21 @@
 #
 #******************************************************************************
 
-from PIL import Image
+# Importing the Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import cv2
+from skimage.measure import shannon_entropy
+import random 
+import math
+from PIL import Image 
+import time
+from itertools import combinations
+from itertools import permutations
+import statistics as st
+from array import array
+from skimage.filters.rank import entropy as en
+from skimage.morphology import disk
 import os
 
 
@@ -29,23 +43,24 @@ def get_image_paths(imagename):
     dirname = os.path.dirname(abs_path)
     print("Full path: " + abs_path)
     print("Directory Path: " +  dirname)
-    image_names = []
-    print("Print->", os.path.join(dirname, imagename))
-    fullpath = os.path.join(DIRPATH, imagename)
-    #fullpath = (dirname+imagename)
+    fullpath = os.path.join(dirname, imagename)
     print("Full path: " + fullpath)
-    image_names.append(fullpath)
-    return image_names
+    return fullpath
 
 
 def run_beta():
     print("Beta Program is Started........... !!!")
     # Write code Here
-    imageReadPath = "P:/workspace/vscode/python/VIMNFT/images/Bilal.jpg"
-    imageSavePath = "P:/workspace/vscode/python/VIMNFT/images/Bilal.png"
-    im1 = Image.open(r"P:/workspace/vscode/python/VIMNFT/images/Bilal.jpg")
-    im1.show()
-    im1.save(r"P:/workspace/vscode/python/VIMNFT/images/Bilal.png")
+    imageReadPath = get_image_paths("images/Bilal.png")
+    image = Image.open(imageReadPath)
+    image.show()
+    image_array = np.array(image)
+    print("Image Length : ", len(image_array))
+    print("Image Shape[0] : ", image_array.shape[0])
+    print("Image Shape[1] : ", image_array.shape[1])
+    print("Image Shape[2] : ", image_array.shape[2])
+    imageSavePath = get_image_paths("images/Bilal.png")
+    image.save(imageSavePath)
     print("Beta Program is Ended Successfully !!!")
     return BETA
 
