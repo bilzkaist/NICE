@@ -48,7 +48,7 @@ def get_image_paths(imagename):
     return fullpath
 
 
-def markingImage():
+
 
 def run_beta():
     print("Beta Program is Started........... !!!")
