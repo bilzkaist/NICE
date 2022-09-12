@@ -108,9 +108,9 @@ def isImageMark(originalImagePath="images/Bilal", dn=1):
 def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked.png"):
     print("Beta Program is Started........... !!!")
     # Write code Here
-    imageName = "images/Bilal"
-    imageNameMark = "images/BilalGray"
-    getImageMark(imageName).show()
+    imageName = "images/lionfamily"
+    imageNameMark = "images/lionfamilyMarked"
+    #getImageMark(imageName).show()
     isImageMark(imageNameMark)
 
 
