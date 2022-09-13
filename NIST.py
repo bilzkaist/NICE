@@ -97,7 +97,7 @@ def getImageMark(originalImagePath="images/Bilal", dn=1):
     #             image_array_Mark[i][j][a] = image_array_Mark[i][j][a]#image_array_resize[i][j]
     
     imageMarked=Image.fromarray(image_array_Mark)
-    imageMarkSavePath = get_image_paths(originalImagePath+"Marked"+".png")
+    imageMarkSavePath = get_image_paths(originalImagePath+"TimeStamped"+".png")
     imageMarked.save(imageMarkSavePath)
     return imageMarked
 
@@ -186,7 +186,7 @@ def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked
     print("Beta Program is Started........... !!!")
     # Write code Here
     imageName = "images/lionfamily"
-    imageNameMark = "images/lionfamilyMarked"
+    imageNameMark = "images/lionfamilyTimeStamped"
     getImageMark(imageName).show()
     #isImageMark(imageNameMark)
     getImageTimeStamp(imageNameMark)
