@@ -23,6 +23,7 @@ from skimage.filters.rank import entropy as en
 from skimage.morphology import disk
 #import imutiimls 
 import os
+from datetime import datetime
 
 
 
@@ -61,9 +62,19 @@ def getImageMark(originalImagePath="images/Bilal", dn=1):
     image_array_Mark = np.array(imageAlpha)
     #print("Image Shape : ", image_array_Mark.shape)
     a = image_array.shape[2]
+    timeNowString = "Time : " +" "+ (datetime.now()).strftime("%H:%M:%S")+", " + datetime.today().strftime("%B %d, %Y")
+    print("Currently  : ",timeNowString)
+    timeNowNumpy = np.fromstring(timeNowString, dtype=int, sep='')#np.array(map(int, timeNowString)) #np.array(list(timeNowString, dtype=int))
+    print("Lenght of TS Str : ",len(timeNowString))
+    print("Lenght of TS Np  : ",timeNowNumpy.size)
     for i in range(image_array.shape[0]):
          for j in range(image_array.shape[1]):
-            image_array_Mark[i][j][a] = image_array_resize[i][j]
+            if(j<range(timeNowNumpy)):
+                print(timeNowNumpy[j])
+                image_array_Mark[i][j][a] = timeNowNumpy[j]
+            else:
+                image_array_Mark[i][j][a] = image_array_resize[i][j]
+    
     imageMarked=Image.fromarray(image_array_Mark)
     imageMarkSavePath = get_image_paths(originalImagePath+"Marked"+".png")
     imageMarked.save(imageMarkSavePath)
@@ -110,7 +121,7 @@ def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked
     # Write code Here
     imageName = "images/lionfamily"
     imageNameMark = "images/lionfamilyMarked"
-    #getImageMark(imageName).show()
+    getImageMark(imageName).show()
     isImageMark(imageNameMark)
 
 
