@@ -57,28 +57,44 @@ def getImageMark(originalImagePath="images/Bilal", dn=1):
     image.show()
     image_array = np.array(image)
     imageGray = image.convert('L')
-    imageGray.show()
+    #imageGray.show()
     imageGrayResize = imageGray.resize((int(imageGray.width / dn), int(imageGray.height / dn)))
     image_array_resize = np.array(imageGrayResize)
     imageAlpha = image.convert("RGBA") # sets alpha to 255
     image_array_Mark = np.array(imageAlpha)
     #print("Image Shape : ", image_array_Mark.shape)
     a = image_array.shape[2]
-    timeNowString = "Time : " +" "+ (datetime.now()).strftime("%H:%M:%S")+", " + datetime.today().strftime("%B %d, %Y")
-    print("Currently  : ",timeNowString)
+    #print("a = ",a)
+    timeNowStringFull = "Time : " +" "+ (datetime.now()).strftime("%H:%M:%S")+", " + datetime.today().strftime("%B %d, %Y")
+    #print("Currently  : ",timeNowStringFull)
+    timeNowString = str(datetime.now())
+    #print("-> TS Str : ",timeNowString)
+    timeNowNumpy = bytearray(timeNowString, encoding='utf8') #[elem.encode("hex") for elem in timeNowString]#np.zeros((100), dtype='datetime64[s]')
     #timeNowNumpy = np.fromstring(timeNowString, dtype=int, sep='')#np.array(map(int, timeNowString)) #np.array(list(timeNowString, dtype=int))
-    print("Lenght of TS Str : ",len(timeNowString))
-    #print("Lenght of TS Np  : ",timeNowNumpy.size)
-    for i in range(image_array.shape[0]):
-         for j in range(image_array.shape[1]):
-            try: 
-                if(j<range(timeNowNumpy)):
-                    print(timeNowNumpy[j])
-                    image_array_Mark[i][j][a] = timeNowNumpy[j]
-                else:
-                    image_array_Mark[i][j][a] = image_array_resize[i][j]
-            except:
-                image_array_Mark[i][j][a] = image_array_resize[i][j]
+    
+    #print("-> TS Np  : ",timeNowNumpy)
+
+    #print("Currently  : ",timeNowString)
+    timeNumpySize = len(timeNowString)
+    #print("Time Numpy Size : ",timeNumpySize)
+    #print("Time Now Numpy : ",timeNowNumpy)
+    print("Created TimeStamp ................................. Time : ",timeNowNumpy)
+    image_array_Mark[1][0][a] = int(timeNumpySize)
+    for t in range(timeNumpySize): 
+        #print(timeNowNumpy[t])
+        image_array_Mark[0][t][a] = timeNowNumpy[t]
+    # for i in range(image_array.shape[0]):
+    #      for j in range(image_array.shape[1]):
+    #         try: 
+    #             if(j<timeNumpySize):
+    #                 #print(timeNowNumpy[j])
+    #                 #print("Before : ",image_array_Mark[i][j][a])
+    #                 image_array_Mark[i][j][a] = timeNowNumpy[j]
+    #                 #print("After : ",image_array_Mark[i][j][a])
+    #             else:
+    #                 image_array_Mark[i][j][a] = image_array_Mark[i][j][a]#image_array_resize[i][j]
+    #         except:
+    #             image_array_Mark[i][j][a] = image_array_Mark[i][j][a]#image_array_resize[i][j]
     
     imageMarked=Image.fromarray(image_array_Mark)
     imageMarkSavePath = get_image_paths(originalImagePath+"Marked"+".png")
@@ -119,6 +135,51 @@ def isImageMark(originalImagePath="images/Bilal", dn=1):
         print("Marking Ratio : ", int(0))
         return False
 
+def getImageTimeStamp(originalImagePath="images/Bilal", timeNumpySize=26):
+    # Write code Here
+    imageReadPath = get_image_paths(originalImagePath+""+".png")
+    image = Image.open(imageReadPath)
+    image_array = np.array(image)
+    a = int(image_array.shape[2] -1)
+    #print("a = ",a)
+    timeNowString = str(datetime.now())
+    #print("-> TS Str : ",timeNowString)
+    timeNowNumpy = bytearray(timeNowString, encoding='utf8') 
+    #print("-> TS Np  : ",timeNowNumpy)
+    error = 0
+    #print("Currently  : ",timeNowString)
+    #print("Time Numpy Size : ",len(timeNowString))
+    #timeNumpySize = image_array[0][0][a]
+    #print("Time Numpy Size  Retreived: ",timeNumpySize)
+    #print("Time Now Numpy : ",timeNowNumpy)
+    timeNumpyArray = timeNowNumpy#np.empty(timeNumpySize, dtype='int')
+    print("Now TimeStamp ..................................... Time : ",timeNumpyArray)
+    for i in range(timeNumpySize): 
+        #print(timeNowNumpy[t])
+        #timeNumpyArray[i] = image_array[0][i][a]
+        try:
+            #print(image_array[0][i][a])
+            timeNumpyArray[i] = image_array[0][i][a]
+        except:
+            print("Error at t = ",i)
+        
+    # for i in range(image_array.shape[0]):
+    #     for j in range(image_array.shape[1]):
+    #         try: 
+    #             if(j<timeNumpySize):
+    #                 #print(timeNowNumpy[j])
+    #                 #print("Before : ",image_array_Mark[i][j][a])
+    #                 timeNumpyArray[j] = image_array[i][j][a]
+    #                 #print("After : ",image_array_Mark[i][j][a])
+    #             #else:
+    #                 #timeNumpyArray[j] = 255#image_array_Mark[i][j][a]
+    #                 #image_array_Mark[i][j][a] = image_array_Mark[i][j][a]#image_array_resize[i][j]
+    #         except:
+    #             error = error +1 
+    #             #timeNumpyArray[j] = 255
+    #             #print("Error Arrise !!!")
+    #             #image_array_Mark[i][j][a] = image_array_Mark[i][j][a]#image_array_resize[i][j]
+    print("Recovered TimeStamp ............................... Time : ",timeNumpyArray)
 
 
 def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked.png"):
@@ -127,57 +188,9 @@ def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked
     imageName = "images/lionfamily"
     imageNameMark = "images/lionfamilyMarked"
     getImageMark(imageName).show()
-    isImageMark(imageNameMark)
+    #isImageMark(imageNameMark)
+    getImageTimeStamp(imageNameMark)
 
-
-    # dn = 1
-    # imageReadPath = get_image_paths("images/Bilal.png")
-    # image = Image.open(imageReadPath)
-    # image.show()
-    # imageGray = image.convert('L')
-    # #imageGray.show()
-    # imageGraySavePath = get_image_paths("images/BilalGray.png")
-    # imageGray.save(imageGraySavePath)
-    # imageGrayResize = imageGray.resize((int(imageGray.width / dn), int(imageGray.height / dn)))
-    # #imageGrayResize.show()
-    # imageGrayResizeSavePath = get_image_paths("images/BilalGrayResize.png")
-    # imageGrayResize.save(imageGrayResizeSavePath)
-    # image_array_resize = np.array(imageGrayResize)
-    # image_array = np.array(image)
-    # imageAlpha = image.convert("RGBA") # sets alpha to 255
-    # image_array_Mark = np.array(imageAlpha)
-    # #image_array_Mark = np.zeros((int(imageGray.height / dn), int(imageGray.width / dn),3)) #numpy.zeros((800, 800))
-    # print("Image Marked   : ", image_array_Mark.shape)
-    # print("Image Basic    : ", image_array.shape)
-    # print("Image Sized    : ", image_array_resize.shape)
-    # print("Image Length   : ", len(image_array))
-    # print("Image Shape[0] : ", image_array.shape[0])
-    # print("Image Shape[1] : ", image_array.shape[1])
-    # print("Image Shape[2] : ", image_array.shape[2])
-
-    
-    # for i in range(image_array.shape[0]):
-    #      for j in range(image_array.shape[1]):
-    #         image_array_Mark[i][j][image_array.shape[2]] = image_array_resize[i][j]
-    #         #for k in range(image_array.shape[2]):
-    #          #   image_array_Mark[i][j][k] = image_array[i][j][k]
-    #         #print("image_array[",i,"][",j,"][",[image_array.shape[2]-1],"]",image_array[i][j][image_array.shape[2]-1]) 
-    # # for i in range(image_array_resize.shape[0]):
-    # #      for j in range(image_array_resize.shape[1]):
-    # #         image_array_Mark[i][j][4] = image_array_resize[i][j]       
-    # #         for k in range(image_array.shape[2]):
-    # #             print("image_array[",i,"][",j,"][",k,"]",image_array[i][j][k]) 
-    # imageMarked=Image.fromarray(image_array_Mark)
-    # imageMarkSavePath = get_image_paths("images/BilalMarked.png")
-    # imageMarked.save(imageMarkSavePath)
-    # #imageMarked.show()
-    # imageMarkedReadPath = get_image_paths("images/BilalMarked.png")
-    # imageMarkedLoaded = Image.open(imageMarkedReadPath)
-    # imageMarkedLoaded.show()
-    # imageMarkedLoadedArray = np.array(imageMarkedLoaded)
-    # print("Image Marked Loaded   : ", imageMarkedLoadedArray.shape)
-    # imageSavePath = get_image_paths("images/Bilal.png")
-    # image.save(imageSavePath)
     print("Beta Program is Ended Successfully !!!")
     return BETA
 
