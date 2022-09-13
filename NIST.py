@@ -187,7 +187,7 @@ def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked
     # Write code Here
     imageName = "images/lionfamily"
     imageNameMark = "images/lionfamilyTimeStamped"
-    getImageMark(imageName).show()
+    #getImageMark(imageName).show()
     #isImageMark(imageNameMark)
     getImageTimeStamp(imageNameMark)
 
