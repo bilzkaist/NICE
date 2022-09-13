@@ -54,8 +54,10 @@ def getImageMark(originalImagePath="images/Bilal", dn=1):
     # Write code Here
     imageReadPath = get_image_paths(originalImagePath+""+".png")
     image = Image.open(imageReadPath)
+    image.show()
     image_array = np.array(image)
     imageGray = image.convert('L')
+    imageGray.show()
     imageGrayResize = imageGray.resize((int(imageGray.width / dn), int(imageGray.height / dn)))
     image_array_resize = np.array(imageGrayResize)
     imageAlpha = image.convert("RGBA") # sets alpha to 255
@@ -64,15 +66,18 @@ def getImageMark(originalImagePath="images/Bilal", dn=1):
     a = image_array.shape[2]
     timeNowString = "Time : " +" "+ (datetime.now()).strftime("%H:%M:%S")+", " + datetime.today().strftime("%B %d, %Y")
     print("Currently  : ",timeNowString)
-    timeNowNumpy = np.fromstring(timeNowString, dtype=int, sep='')#np.array(map(int, timeNowString)) #np.array(list(timeNowString, dtype=int))
+    #timeNowNumpy = np.fromstring(timeNowString, dtype=int, sep='')#np.array(map(int, timeNowString)) #np.array(list(timeNowString, dtype=int))
     print("Lenght of TS Str : ",len(timeNowString))
-    print("Lenght of TS Np  : ",timeNowNumpy.size)
+    #print("Lenght of TS Np  : ",timeNowNumpy.size)
     for i in range(image_array.shape[0]):
          for j in range(image_array.shape[1]):
-            if(j<range(timeNowNumpy)):
-                print(timeNowNumpy[j])
-                image_array_Mark[i][j][a] = timeNowNumpy[j]
-            else:
+            try: 
+                if(j<range(timeNowNumpy)):
+                    print(timeNowNumpy[j])
+                    image_array_Mark[i][j][a] = timeNowNumpy[j]
+                else:
+                    image_array_Mark[i][j][a] = image_array_resize[i][j]
+            except:
                 image_array_Mark[i][j][a] = image_array_resize[i][j]
     
     imageMarked=Image.fromarray(image_array_Mark)
