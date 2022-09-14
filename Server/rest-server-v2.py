@@ -115,4 +115,6 @@ api.add_resource(TaskAPI, '/todo/api/v1.0/tasks/<int:id>', endpoint='task')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    from waitress import serve
+    serve(app, host="127.0.0.1", port=9999)
