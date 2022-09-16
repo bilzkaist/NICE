@@ -38,7 +38,7 @@ class NICE:
     def __init__(self):
         x=0
 
-def get_image_paths(imagename):
+def getImagePaths(imagename):
     """
     function to combine directory path with individual image paths
     """
@@ -47,8 +47,66 @@ def get_image_paths(imagename):
     fullpath = os.path.join(dirname, imagename)
     return fullpath
 
-def makeNFTImageMark():
+def makeNFTImageMark(originalImagePath="images/Bilal.png", messageString="Bilal Dastagir", dn=1):
     # Write code Here
+    try:
+        imageReadPath = getImagePaths(originalImagePath+".png")
+    except:
+        imageReadPath = getImagePaths(originalImagePath)
+    imageOriginal = Image.open(imageReadPath)
+    imageOriginal.show()
+    imageOriginalArray = np.array(imageOriginal)
+    imageOriginalGray = imageOriginal.convert('L')
+    imageOriginalGray.show()
+    imageOriginalGrayArray = np.array(imageOriginalGray)
+    imageMarkString = messageString + " with Time : " +" "+ (datetime.now()).strftime("%H:%M:%S")+", " + datetime.today().strftime("%B %d, %Y")
+    print("Image Mark Message : ",imageMarkString)
+    imageMarkNumpy = bytearray(imageMarkString, encoding='utf8')
+    imageMarkNumpySize = len(imageMarkString)
+    print("Image Mark Size : ", imageMarkNumpySize)
+    imageMark = imageOriginal.convert("RGBA")
+    imageMark.show()
+    imageMarkArray = np.array(imageMark)
+    imageMarkArrayFinal = np.array(imageMark)
+    for i in range(imageOriginalArray.shape[0]):
+        for j in range(imageOriginalArray.shape[1]):
+            for k in range(imageOriginalArray.shape[2]):
+                imageMarkArray[i][j][k] = 255- imageMarkArray[i][j][k] 
+    imageMarked = Image.fromarray(imageMarkArray)
+    imageMarked.show()
+    imageMarkedGray = imageMarked.convert('L')
+    imageMarkedGray.show()
+    imageMarkedGrayArray = np.array(imageMarkedGray)
+    for x in range(imageOriginalArray.shape[0]):
+        for y in range(imageOriginalArray.shape[1]):
+            if (imageMarkedGrayArray[x][y]>225):
+                imageMarkedGrayArray[x][y] = 0
+                imageMarkArrayFinal[x][y][0] = 0
+                imageMarkArrayFinal[x][y][1] = 0
+                imageMarkArrayFinal[x][y][2] = 0
+            elif (imageMarkedGrayArray[x][y]<25):
+                imageMarkedGrayArray[x][y] = 255
+                imageMarkArrayFinal[x][y][0] = 255
+                imageMarkArrayFinal[x][y][1] = 255
+                imageMarkArrayFinal[x][y][2] = 255
+            else:
+                imageMarkedGrayArray[x][y] = 255
+                #imageMarkArrayFinal[x][y][0] = 255
+                #imageMarkArrayFinal[x][y][1] = 255
+                #imageMarkArrayFinal[x][y][2] = 255
+    imageGrayMarked = Image.fromarray(imageMarkedGrayArray)
+    imageGrayMarked.show()
+    imageMarkedFinal = Image.fromarray(imageMarkArrayFinal)
+    imageMarkedFinal.show()
+    imageDifferenceArray = np.array(imageOriginal)
+    for i in range(imageOriginalArray.shape[0]):
+        for j in range(imageOriginalArray.shape[1]):
+            for k in range(imageOriginalArray.shape[2]):
+                if (imageMarkArrayFinal[i][j][k] == imageOriginalArray[i][j][k]):
+                    imageDifferenceArray[i][j][k] = 255
+    imageDifference = Image.fromarray(imageDifferenceArray)
+    imageDifference.show()
+
     return 0
 
 
@@ -61,6 +119,7 @@ def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked
     # Write code Here
     imageName = "images/lionfamily"
     imageNameMark = "images/lionfamilyTimeStamped"
+    makeNFTImageMark(imageName)
 
     print("Beta Program is Ended Successfully !!!")
     return BETA
