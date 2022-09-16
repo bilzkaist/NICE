@@ -57,7 +57,7 @@ def makeNFTImageMark(originalImagePath="images/Bilal.png", messageString="Bilal 
     imageOriginal.show()
     imageOriginalArray = np.array(imageOriginal)
     imageOriginalGray = imageOriginal.convert('L')
-    imageOriginalGray.show()
+    #imageOriginalGray.show()
     imageOriginalGrayArray = np.array(imageOriginalGray)
     imageMarkString = messageString + " with Time : " +" "+ (datetime.now()).strftime("%H:%M:%S")+", " + datetime.today().strftime("%B %d, %Y")
     print("Image Mark Message : ",imageMarkString)
@@ -65,47 +65,56 @@ def makeNFTImageMark(originalImagePath="images/Bilal.png", messageString="Bilal 
     imageMarkNumpySize = len(imageMarkString)
     print("Image Mark Size : ", imageMarkNumpySize)
     imageMark = imageOriginal.convert("RGBA")
-    imageMark.show()
+    #imageMark.show()
     imageMarkArray = np.array(imageMark)
     imageMarkArrayFinal = np.array(imageMark)
-    for i in range(imageOriginalArray.shape[0]):
-        for j in range(imageOriginalArray.shape[1]):
-            for k in range(imageOriginalArray.shape[2]):
-                imageMarkArray[i][j][k] = 255- imageMarkArray[i][j][k] 
+    a = imageMarkArray.shape[2] - 1
+    imageMarkArray[1][0][a] = imageMarkNumpySize 
+    print("Created TimeStamp .................................  ",imageMarkNumpy)
+    for i in range(imageMarkArray[1][0][a]):
+        imageMarkArray[0][i][a] = imageMarkNumpy[i]
+    
     imageMarked = Image.fromarray(imageMarkArray)
     imageMarked.show()
-    imageMarkedGray = imageMarked.convert('L')
-    imageMarkedGray.show()
-    imageMarkedGrayArray = np.array(imageMarkedGray)
-    for x in range(imageOriginalArray.shape[0]):
-        for y in range(imageOriginalArray.shape[1]):
-            if (imageMarkedGrayArray[x][y]>225):
-                imageMarkedGrayArray[x][y] = 0
-                imageMarkArrayFinal[x][y][0] = 0
-                imageMarkArrayFinal[x][y][1] = 0
-                imageMarkArrayFinal[x][y][2] = 0
-            elif (imageMarkedGrayArray[x][y]<25):
-                imageMarkedGrayArray[x][y] = 255
-                imageMarkArrayFinal[x][y][0] = 255
-                imageMarkArrayFinal[x][y][1] = 255
-                imageMarkArrayFinal[x][y][2] = 255
-            else:
-                imageMarkedGrayArray[x][y] = 255
-                #imageMarkArrayFinal[x][y][0] = 255
-                #imageMarkArrayFinal[x][y][1] = 255
-                #imageMarkArrayFinal[x][y][2] = 255
-    imageGrayMarked = Image.fromarray(imageMarkedGrayArray)
-    imageGrayMarked.show()
-    imageMarkedFinal = Image.fromarray(imageMarkArrayFinal)
-    imageMarkedFinal.show()
-    imageDifferenceArray = np.array(imageOriginal)
-    for i in range(imageOriginalArray.shape[0]):
-        for j in range(imageOriginalArray.shape[1]):
-            for k in range(imageOriginalArray.shape[2]):
-                if (imageMarkArrayFinal[i][j][k] == imageOriginalArray[i][j][k]):
-                    imageDifferenceArray[i][j][k] = 255
-    imageDifference = Image.fromarray(imageDifferenceArray)
-    imageDifference.show()
+    
+    # for i in range(imageOriginalArray.shape[0]):
+    #     for j in range(imageOriginalArray.shape[1]):
+    #         for k in range(imageOriginalArray.shape[2]):
+    #             imageMarkArray[i][j][k] = 255- imageMarkArray[i][j][k] 
+    # imageMarked = Image.fromarray(imageMarkArray)
+    # imageMarked.show()
+    # imageMarkedGray = imageMarked.convert('L')
+    # imageMarkedGray.show()
+    # imageMarkedGrayArray = np.array(imageMarkedGray)
+    # for x in range(imageOriginalArray.shape[0]):
+    #     for y in range(imageOriginalArray.shape[1]):
+    #         if (imageMarkedGrayArray[x][y]>225):
+    #             imageMarkedGrayArray[x][y] = 0
+    #             imageMarkArrayFinal[x][y][0] = 0
+    #             imageMarkArrayFinal[x][y][1] = 0
+    #             imageMarkArrayFinal[x][y][2] = 0
+    #         elif (imageMarkedGrayArray[x][y]<25):
+    #             imageMarkedGrayArray[x][y] = 255
+    #             imageMarkArrayFinal[x][y][0] = 255
+    #             imageMarkArrayFinal[x][y][1] = 255
+    #             imageMarkArrayFinal[x][y][2] = 255
+    #         else:
+    #             imageMarkedGrayArray[x][y] = 255
+    #             #imageMarkArrayFinal[x][y][0] = 255
+    #             #imageMarkArrayFinal[x][y][1] = 255
+    #             #imageMarkArrayFinal[x][y][2] = 255
+    # imageGrayMarked = Image.fromarray(imageMarkedGrayArray)
+    # imageGrayMarked.show()
+    # imageMarkedFinal = Image.fromarray(imageMarkArrayFinal)
+    # imageMarkedFinal.show()
+    # imageDifferenceArray = np.array(imageOriginal)
+    # for i in range(imageOriginalArray.shape[0]):
+    #     for j in range(imageOriginalArray.shape[1]):
+    #         for k in range(imageOriginalArray.shape[2]):
+    #             if (imageMarkArrayFinal[i][j][k] == imageOriginalArray[i][j][k]):
+    #                 imageDifferenceArray[i][j][k] = 255
+    # imageDifference = Image.fromarray(imageDifferenceArray)
+    # imageDifference.show()
 
     return 0
 
