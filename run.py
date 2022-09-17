@@ -76,6 +76,9 @@ def makeNFTImageMark(originalImagePath="images/Bilal.png", messageString="Bilal 
     
     imageMarked = Image.fromarray(imageMarkArray)
     imageMarked.show()
+
+    imageMarkedSavePath = getImagePaths(originalImagePath+"Stamped"+".png")
+    imageMarked.save(imageMarkedSavePath)
     
     # for i in range(imageOriginalArray.shape[0]):
     #     for j in range(imageOriginalArray.shape[1]):
@@ -116,11 +119,17 @@ def makeNFTImageMark(originalImagePath="images/Bilal.png", messageString="Bilal 
     # imageDifference = Image.fromarray(imageDifferenceArray)
     # imageDifference.show()
 
-    return 0
+    return imageMarked
 
 
 def extractNFTImageMark():
     # Write code Here
+    try:
+        imageReadPath = getImagePaths(originalImagePath+".png")
+    except:
+        imageReadPath = getImagePaths(originalImagePath)
+    imageOriginal = Image.open(imageReadPath)
+    imageOriginal.show()
     return 0
 
 def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked.png"):
@@ -128,7 +137,7 @@ def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked
     # Write code Here
     imageName = "images/lionfamily"
     imageNameMark = "images/lionfamilyTimeStamped"
-    makeNFTImageMark(imageName)
+    imageMarked = makeNFTImageMark(imageName)
 
     print("Beta Program is Ended Successfully !!!")
     return BETA
