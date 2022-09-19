@@ -122,22 +122,34 @@ def makeNFTImageMark(originalImagePath="images/Bilal.png", messageString="Bilal 
     return imageMarked
 
 
-def extractNFTImageMark():
+def extractNFTImageMark(markedImagePath="images/BilalStamped.png", messageString="Bilal Dastagir", dn=1):
     # Write code Here
     try:
-        imageReadPath = getImagePaths(originalImagePath+".png")
+        imageReadPath = getImagePaths(markedImagePath+".png")
     except:
-        imageReadPath = getImagePaths(originalImagePath)
-    imageOriginal = Image.open(imageReadPath)
-    imageOriginal.show()
+        imageReadPath = getImagePaths(markedImagePath)
+    imageMarked  = Image.open(imageReadPath)
+    imageMarked.show()
+    imageMarkString = messageString + " with Time : " +" "+ (datetime.now()).strftime("%H:%M:%S")+", " + datetime.today().strftime("%B %d, %Y")
+    #print("Image Mark Message : ",imageMarkString)
+    imageMarkNumpy = bytearray(imageMarkString, encoding='utf8')
+    print("Currently TimeStamp .................................  ",imageMarkNumpy)
+    imageMarkedArray = np.array(imageMarked)
+    a = imageMarkedArray.shape[2] - 1
+    imageMarkedNumpySize = imageMarkedArray[1][0][a] 
+    for i in range(imageMarkedNumpySize):
+        imageMarkNumpy[i] = imageMarkedArray[0][i][a]
+    print("Extracted TimeStamp .................................  ",imageMarkNumpy)
+    
     return 0
 
 def run_beta(originalImagePath="images/Bilal", markImagePath="images/BilalMarked.png"):
     print("Beta Program is Started........... !!!")
     # Write code Here
-    imageName = "images/lionfamily"
-    imageNameMark = "images/lionfamilyTimeStamped"
-    imageMarked = makeNFTImageMark(imageName)
+    imageName = "images/Bilal"
+    imageNameMark = "images/lionfamilyStamped"
+    #imageMarked = makeNFTImageMark(imageName)
+    extractNFTImageMark(imageNameMark)
 
     print("Beta Program is Ended Successfully !!!")
     return BETA
